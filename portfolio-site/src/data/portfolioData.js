@@ -112,7 +112,7 @@ export const projects = [
       "Automated PDF report generation",
       "Real-time CCTV monitoring",
     ],
-    github: "https://github.com/Shezan57/Computer-Vision",
+    github: "https://github.com/Shezan57/AI-Safety-Compliance-Officer",
     demo: null,
     featured: true,
   },
