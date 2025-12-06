@@ -20,12 +20,13 @@ parts/
 sdist/
 var/
 wheels/
+files/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
-
+project descriptions/
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
