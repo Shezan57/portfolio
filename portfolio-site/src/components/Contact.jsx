@@ -6,7 +6,9 @@ import {
   FaLinkedin, 
   FaMapMarkerAlt,
   FaPhone,
-  FaPaperPlane
+  FaPaperPlane,
+  FaCheckCircle,
+  FaExclamationCircle
 } from 'react-icons/fa';
 import { personalInfo } from '../data/portfolioData';
 
@@ -16,6 +18,8 @@ const Contact = () => {
     email: '',
     message: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
 
   const handleChange = (e) => {
     setFormData({
@@ -24,12 +28,43 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Create mailto link
-    const subject = `Portfolio Contact from ${formData.name}`;
-    const body = `Name: ${formData.name}%0D%0AEmail: ${formData.email}%0D%0A%0D%0AMessage:%0D%0A${formData.message}`;
-    window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_KEY,
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          from_name: 'Portfolio Contact Form',
+          subject: `New message from ${formData.name} - Portfolio`,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+      // Reset status after 5 seconds
+      setTimeout(() => setSubmitStatus(null), 5000);
+    }
   };
 
   const contactInfo = [
@@ -149,7 +184,7 @@ const Contact = () => {
                 </span>
               </div>
               <p className="text-gray-400 text-sm mt-2">
-                Currently seeking AI/ML Engineer or Research positions
+                Seeking AI/ML Engineer, Computer Vision, or Research roles
               </p>
             </motion.div>
           </motion.div>
@@ -228,15 +263,56 @@ const Contact = () => {
                 />
               </motion.div>
 
+              {/* Submit Button */}
               <motion.button
                 type="submit"
-                className="w-full px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium hover:shadow-lg hover:shadow-primary/25 transition-all flex items-center justify-center gap-2"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                disabled={isSubmitting}
+                className={`w-full px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+                  isSubmitting 
+                    ? 'opacity-70 cursor-not-allowed' 
+                    : 'hover:shadow-lg hover:shadow-primary/25'
+                }`}
+                whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+                whileTap={!isSubmitting ? { scale: 0.98 } : {}}
               >
-                <FaPaperPlane />
-                Send Message
+                {isSubmitting ? (
+                  <>
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <FaPaperPlane />
+                    Send Message
+                  </>
+                )}
               </motion.button>
+
+              {/* Status Messages */}
+              {submitStatus === 'success' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-2 text-green-400 bg-green-400/10 p-4 rounded-lg"
+                >
+                  <FaCheckCircle />
+                  <span>Message sent successfully! I'll get back to you soon.</span>
+                </motion.div>
+              )}
+
+              {submitStatus === 'error' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-2 text-red-400 bg-red-400/10 p-4 rounded-lg"
+                >
+                  <FaExclamationCircle />
+                  <span>Failed to send message. Please try again or email me directly.</span>
+                </motion.div>
+              )}
             </form>
           </motion.div>
         </div>

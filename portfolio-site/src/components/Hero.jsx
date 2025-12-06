@@ -1,10 +1,12 @@
 import { Link } from 'react-scroll';
-import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
-import { HiArrowDown } from 'react-icons/hi';
+import { FaGithub, FaLinkedin, FaEnvelope, FaDownload, FaRobot } from 'react-icons/fa';
+import { HiArrowDown, HiSparkles } from 'react-icons/hi';
 import { TypeAnimation } from 'react-type-animation';
 import { motion } from 'framer-motion';
 import { personalInfo, stats } from '../data/portfolioData';
 import profileImage from '../assets/profile.png';
+// Import your CV PDF - add your CV file to src/assets/
+import resumePDF from '../assets/Shezan_Ahmed_CV.pdf';
 
 const Hero = () => {
   return (
@@ -71,7 +73,8 @@ const Hero = () => {
                 <img
                   src={profileImage}
                   alt={personalInfo.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover scale-105"
+                  style={{ objectPosition: 'center calc(20%)' }}
                 />
               </div>
             </div>
@@ -122,15 +125,11 @@ const Hero = () => {
               <TypeAnimation
                 sequence={[
                   'AI/ML Engineer',
-                  2000,
-                  'Full-Stack Developer',
-                  2000,
-                  'Published Researcher',
-                  2000,
+                  2500,
                   'Computer Vision Specialist',
-                  2000,
-                  'MLOps Engineer',
-                  2000,
+                  2500,
+                  'Published Researcher',
+                  2500,
                 ]}
                 wrapper="span"
                 speed={50}
@@ -154,7 +153,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 mb-8"
+              className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 mb-4"
             >
               <Link
                 to="projects"
@@ -166,6 +165,14 @@ const Hero = () => {
                 <span className="relative z-10">View Projects</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity" />
               </Link>
+              <a
+                href={resumePDF}
+                download="Shezan_Ahmed_CV.pdf"
+                className="group px-8 py-3 glass rounded-lg font-medium text-gray-300 hover:text-white hover:border-primary/50 transition-all cursor-pointer flex items-center gap-2"
+              >
+                <FaDownload className="group-hover:animate-bounce" />
+                Download CV
+              </a>
               <Link
                 to="contact"
                 smooth={true}
@@ -175,6 +182,30 @@ const Hero = () => {
               >
                 Get in Touch
               </Link>
+            </motion.div>
+
+            {/* AI Assistant Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="flex items-center lg:justify-start justify-center mb-8"
+            >
+              <button
+                onClick={() => {
+                  // Find and click the floating chat button
+                  const chatButton = document.querySelector('[aria-label="Open chat"]');
+                  if (chatButton) chatButton.click();
+                }}
+                className="group relative px-6 py-2.5 bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/30 rounded-full font-medium text-gray-300 hover:text-white hover:border-purple-400/50 transition-all cursor-pointer flex items-center gap-2 hover:shadow-lg hover:shadow-purple-500/20"
+              >
+                <div className="relative">
+                  <FaRobot className="text-purple-400 group-hover:text-purple-300" />
+                  <HiSparkles className="absolute -top-1 -right-1 text-yellow-400 text-xs animate-pulse" />
+                </div>
+                <span>Ask My AI Assistant</span>
+                <span className="text-xs px-2 py-0.5 bg-purple-500/30 rounded-full text-purple-300">New</span>
+              </button>
             </motion.div>
 
             {/* Social Links */}

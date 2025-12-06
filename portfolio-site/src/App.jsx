@@ -6,10 +6,12 @@ import About from './components/About';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
 import CurrentlyWorkingOn from './components/CurrentlyWorkingOn';
+import GitHubActivity from './components/GitHubActivity';
 import Publications from './components/Publications';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import LoadingScreen from './components/LoadingScreen';
+import ChatBot from './components/ChatBot';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -37,10 +39,14 @@ function App() {
           <Skills />
           <Projects />
           <CurrentlyWorkingOn />
+          <GitHubActivity />
           <Publications />
           <Contact />
         </main>
         <Footer />
+        
+        {/* AI ChatBot */}
+        <ChatBot />
       </div>
     </div>
   );

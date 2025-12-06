@@ -2,9 +2,9 @@
 
 export const personalInfo = {
   name: "S M Shezan Ahmed",
-  title: "AI/ML Engineer | Full-Stack Developer | Researcher",
-  tagline: "Building production AI systems that solve real-world problems",
-  email: "shezan.ahamed99@gmail.com",
+  title: "AI/ML Engineer | Computer Vision Specialist | Researcher",
+  tagline: "Building intelligent vision systems and deploying production AI solutions that drive real-world impact",
+  email: "shezanahamed57@gmail.com",
   phone: "+86 156 4922 0380",
   location: "Zhengzhou, China",
   github: "https://github.com/Shezan57",
@@ -13,40 +13,48 @@ export const personalInfo = {
 };
 
 export const stats = [
-  { label: "Projects Completed", value: "9+" },
+  { label: "AI/ML Projects", value: "9+" },
   { label: "Research Papers", value: "2" },
-  { label: "Years Experience", value: "2+" },
-  { label: "Technologies", value: "25+" },
+  { label: "Years in AI/ML", value: "2+" },
+  { label: "CV Model Accuracy", value: "93.6%" },
 ];
 
 export const about = {
-  description: `AI/ML Engineer with hands-on experience building production-ready systems across Computer Vision, 
-  NLP, and MLOps. Published researcher with expertise in deploying end-to-end machine learning pipelines on AWS. 
-  Passionate about creating AI solutions that deliver measurable real-world impact.`,
+  description: `AI/ML Engineer specializing in Computer Vision and production ML systems. Published researcher 
+  with expertise in building end-to-end deep learning pipelines, from model development to cloud deployment. 
+  Focused on creating AI solutions that deliver measurable real-world impact in safety, healthcare, and automation.`,
   highlights: [
-    "Published 2 peer-reviewed research papers on AI applications",
-    "Built production MLOps pipeline with AWS, Docker & CI/CD",
-    "Developed CV systems achieving 93.6% mAP in safety compliance",
-    "Experience with LangChain, LangGraph & modern LLM frameworks",
+    "Published 2 peer-reviewed papers on AI in healthcare and road safety",
+    "Developed YOLO-based CV systems achieving 93.6% mAP for safety compliance",
+    "Built production MLOps pipelines with AWS, Docker & CI/CD automation",
+    "Expert in LangChain, RAG, and modern LLM application frameworks",
   ],
 };
 
 export const skills = {
-  "AI & Machine Learning": [
+  "Computer Vision": [
+    "OpenCV",
+    "YOLO (v8/v11)",
+    "Image Segmentation",
+    "Object Detection",
+    "CNN Architectures",
+    "MediaPipe",
+  ],
+  "AI & Deep Learning": [
     "TensorFlow",
     "PyTorch",
     "Scikit-learn",
-    "OpenCV",
+    "Keras",
     "Hugging Face",
-    "YOLO",
+    "Neural Networks",
   ],
   "LLM & NLP": [
     "LangChain",
     "LangGraph",
     "OpenAI API",
-    "RAG",
-    "Word2Vec",
+    "RAG Systems",
     "Transformers",
+    "Prompt Engineering",
   ],
   "MLOps & Cloud": [
     "AWS (S3, EC2, ECR)",
@@ -54,30 +62,23 @@ export const skills = {
     "GitHub Actions",
     "MLflow",
     "DVC",
-    "Kubernetes",
+    "CI/CD Pipelines",
   ],
   "Programming": [
     "Python",
+    "SQL",
     "JavaScript",
     "Java",
     "C/C++",
-    "SQL",
+    "Bash",
   ],
-  "Web Development": [
-    "React",
-    "Next.js",
+  "Tools & Frameworks": [
     "FastAPI",
     "Flask",
-    "Tailwind CSS",
     "Streamlit",
-  ],
-  "Tools & Platforms": [
     "Git/GitHub",
     "Linux",
-    "MongoDB",
     "PostgreSQL",
-    "VS Code",
-    "Jupyter",
   ],
 };
 
