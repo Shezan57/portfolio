@@ -83,10 +83,19 @@ Please provide a helpful response based on the portfolio information above. Be c
       setMessages(prev => [...prev, { role: 'assistant', content: text }]);
     } catch (error) {
       console.error('Error calling Gemini API:', error);
-      console.error('Error details:', error.message);
+      
+      let errorMessage;
+      if (error.message?.includes('429') || error.message?.includes('quota')) {
+        errorMessage = "I'm getting a lot of questions right now! 😅 Please wait a moment and try again, or feel free to reach out to Shezan directly at shezanahamed57@gmail.com";
+      } else if (error.message?.includes('API key')) {
+        errorMessage = "I'm not properly configured yet. Please contact Shezan directly at shezanahamed57@gmail.com";
+      } else {
+        errorMessage = "I'm having trouble connecting right now. Please try again in a moment or contact Shezan directly at shezanahamed57@gmail.com";
+      }
+      
       setMessages(prev => [...prev, { 
         role: 'assistant', 
-        content: `I'm sorry, I'm having trouble connecting right now. Error: ${error.message}. Please try again or contact Shezan directly at shezanahamed57@gmail.com` 
+        content: errorMessage
       }]);
     } finally {
       setIsLoading(false);
