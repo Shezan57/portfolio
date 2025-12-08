@@ -8,7 +8,6 @@ import {
   FaSpinner
 } from 'react-icons/fa';
 import { HiSparkles } from 'react-icons/hi';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { portfolioContext, systemPrompt } from '../data/portfolioContext';
 
 const ChatBot = () => {
@@ -51,20 +50,17 @@ const ChatBot = () => {
 
     try {
       // Check if API key exists
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-      if (!apiKey || apiKey === 'your_gemini_api_key_here') {
-        throw new Error('Gemini API key not configured');
+      const apiKey = import.meta.env.VITE_GROQ_API_KEY;
+      if (!apiKey || apiKey === 'your_groq_api_key_here') {
+        throw new Error('Groq API key not configured');
       }
 
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-      
       // Build conversation history for context
       const conversationHistory = messages
         .map(msg => `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`)
         .join('\n');
 
-      const prompt = `${systemPrompt}
+      const fullPrompt = `${systemPrompt}
 
 Here is Shezan's portfolio information:
 ${portfolioContext}
@@ -76,18 +72,40 @@ User: ${userMessage}
 
 Please provide a helpful response based on the portfolio information above. Be conversational and professional.`;
 
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
+      // Call Groq API
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [
+            { role: 'system', content: systemPrompt + '\n\nPortfolio Information:\n' + portfolioContext },
+            { role: 'user', content: userMessage }
+          ],
+          temperature: 0.7,
+          max_tokens: 1024
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || `API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const text = data.choices[0]?.message?.content || "I couldn't generate a response.";
 
       setMessages(prev => [...prev, { role: 'assistant', content: text }]);
     } catch (error) {
-      console.error('Error calling Gemini API:', error);
+      console.error('Error calling Groq API:', error);
       
       let errorMessage;
-      if (error.message?.includes('429') || error.message?.includes('quota')) {
+      if (error.message?.includes('429') || error.message?.includes('rate')) {
         errorMessage = "I'm getting a lot of questions right now! 😅 Please wait a moment and try again, or feel free to reach out to Shezan directly at shezanahamed57@gmail.com";
-      } else if (error.message?.includes('API key')) {
+      } else if (error.message?.includes('API key') || error.message?.includes('401')) {
         errorMessage = "I'm not properly configured yet. Please contact Shezan directly at shezanahamed57@gmail.com";
       } else {
         errorMessage = "I'm having trouble connecting right now. Please try again in a moment or contact Shezan directly at shezanahamed57@gmail.com";
