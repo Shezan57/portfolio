@@ -26,19 +26,14 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: 'portfolio-site/package-lock.json'
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        with:
-          enablement: true
 
       - name: Install dependencies
-        working-directory: ./portfolio-site
         run: npm ci
 
       - name: Build
-        working-directory: ./portfolio-site
         env:
           VITE_WEB3FORMS_KEY: ${{ secrets.VITE_WEB3FORMS_KEY }}
           VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
@@ -47,7 +42,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './portfolio-site/dist'
+          path: './dist'
 
   deploy:
     environment:
